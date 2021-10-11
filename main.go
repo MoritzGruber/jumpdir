@@ -24,11 +24,15 @@ func main() {
 			}
 
 			if de.ModeType().IsDir() && strings.Contains(osPathname, targetDir) {
-				dirs := strings.Split(osPathname, "/")
-				if dirs[len(dirs)-1] == targetDir {
-					if !found {
-						found = true
-						fmt.Printf("%s", osPathname)
+				// only use for direct git repos
+				if _, err := os.Stat(osPathname + "/.git"); !os.IsNotExist(err) {
+					// /.git exists
+					dirs := strings.Split(osPathname, "/")
+					if dirs[len(dirs)-1] == targetDir {
+						if !found {
+							found = true
+							fmt.Printf("%s", osPathname)
+						}
 					}
 				}
 			}
